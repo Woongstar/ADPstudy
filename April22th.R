@@ -1,0 +1,21 @@
+chickFlick <- hickFlick
+hickFlick <- read.delim(file.choose(), header = T)
+bar <- ggplot(chickFlick, aes(film, arousal))
+View(chickFlick)
+bar + stat_summary(fun.y= mean, geom="bar", fill="White", color="black") + stat_summary(fun.data = mean_cl_normal, geom="pointrange" )+labs(x="Film", y="Mean Arousal")
+bar <- ggplot(chickFlick, aes(film, arousal, fill=film))
+bar + stat_summary(fun.y= mean, geom="bar", position = "dodge")
+bar + stat_summary(fun.data = mean_cl_normal, geom="errorbar", position_dodge(width = 0.90), width=0.2)
+
+bar + stat_summary(fun = mean, geom="bar", position = "dodge") + stat_summary(fun.data = mean_cl_normal, geom="errorbar", position = position_dodge(width = 0.90), width=0.2) + labs(x="Film", y= "Mean Arousal", fill = "gender")
+bar + stat_summary(fun = mean, geom="bar") + stat_summary(fun.data = mean_cl_normal,geom = "errorbar", width=0.2) + facet_wrap(~gender) + labs(x="Film", y="Mean Arousal") + theme(legend.position="none")
+
+hiccupsData <- read.delim(file.choose(), header= T)
+View(hiccupsData)
+hiccups <- stack(hiccupsData)
+View(hiccups)
+names(hiccups)<- c("hiccups","Intervention")
+hiccups$Intervention_Factor = factor(hiccups$Intervention, levels(hiccups$Intervention))
+str(hiccups)
+line<- ggplot(hiccups, aes(Intervention_Factor, hiccups))
+line + stat_summary(fun = mean, geom="line", aes(group=1), color="Blue", lty="dashed") + stat_summary(fun.data = mean_cl_boot, geom = "errorbar", width=0.2) + labs(x="Intervention", y="Mean number of Hiccups")
